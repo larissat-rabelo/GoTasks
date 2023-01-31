@@ -96,6 +96,10 @@ tr:first-child {
     display: none;
 }
 
+.modal-visible {
+    display: flex;
+}
+
 .modal-container {
     width: 100%;
     max-width: 40vw;

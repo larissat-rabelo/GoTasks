@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/style.css" />
     <link rel="stylesheet" href="./assets/reset.css" />
-    <title>Go Tasks</title>
+    <title>GoTasks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,24 +14,24 @@
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body onload="fillTable()">
     <header>
       <h1>
-        <a href="#"> Go Tasks </a>
+        <a href="#"> GoTasks </a>
       </h1>
     </header>
     <main class="container">
       <div class="main-header">
-        <button class="btn-new-task">Nova Tarefa</button>
+        <button class="btn-new-task" onclick="toggleModal()">Nova Tarefa</button>
         <span class="total-tasks">
-          <span id="count-task">0</span>
+          <span id="count-tasks">0</span>
           Tarefas registradas
         </span>
       </div>
       <table>
         <thead>
           <tr>
-            <th>Descrição</th>
+            <th>Descrição</th> 
             <th>Data</th>
             <th>Ações</th>
           </tr>
@@ -45,7 +45,7 @@
           <form id="form">
             <div class="form-group">
               <label for="description">Descrição da tarefa</label>
-              <input type="text" placeholder="Desrição" id="description" />
+              <input type="text" placeholder="Descrição" id="description" />
             </div>
             <div class="form-group">
               <label for="date">Data</label>
@@ -53,11 +53,13 @@
             </div>
           </form>
           <div class="buttons-modal">
-            <button class="btn-cancel" type="button" onclick="">
+            <button class="btn-cancel" type="button" onclick="toggleModal()">
               Cancelar
             </button>
 
-            <button class="btn-save" type="button">Salvar</button>
+            <button class="btn-save" type="button" id="btn-creat-task">
+                Salvar
+            </button>
           </div>
         </article>
       </div>
@@ -65,5 +67,6 @@
     <footer id="ftr">
       <p>&copy;Go Tasks, 2023. Todos os direitos reservados.</p>
     </footer>
+    <script src="./script.js"></script>
   </body>
 </html>
