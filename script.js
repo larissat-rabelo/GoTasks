@@ -5,7 +5,8 @@ const inputDescription = document.getElementById('description')
 const inputDate = document.getElementById('date')
 const loadingMessage = document.getElementById('loading-message')
 const countTask = document.getElementById('count-tasks')
-const btnCreatTask = document.getElementById('btn-creat-task')
+const btnCreateTask = document.getElementById('btn-creat-task')
+const alertBox = document.getElementById('alert')
 
 function updateCountTasks() {
     const allTasks = getTasks();
@@ -14,8 +15,9 @@ function updateCountTasks() {
 
 function fillTable() {
     const allTasks = getTasks()
+    allTasks.forEach(addTask)
 
-    if(allTasks.length == 0) {
+    if(allTasks.length === 0) {
         loadingMessage.innerHTML = "Você não tem nenhuma tarefa"
     } else {
         loadingMessage.innerHTML = ""
@@ -24,12 +26,19 @@ function fillTable() {
     updateCountTasks()
 }
 
+function addTask(task) {
+    const tr = document.createElement('tr')
+    tr.innerHTML = innerHTMLTasks(task)
+
+    table.appendChild(tr)
+}
+
 function innerHTMLTasks(task) {
     const html = `
         <td>${task.description}</td> 
         <td>${task.date}</td>
         <td>
-            <a href="#" onclick="removeTask()">
+            <a href="#" onclick="removeTask(${task.id})">
                 🗑
             </a>
         </td>
@@ -38,24 +47,41 @@ function innerHTMLTasks(task) {
     return html;
 }
 
-btnCreatTask.addEventListener('click', creatTask)
-function creatTask(e) {
+function removeTask(id) {
+    const allTasks = getTasks()
+    const filterTasks =  allTasks.filter(task => task.id !== id)
+
+    setTasks(filterTasks)
+    reload()
+}
+
+function reload() {
+    table.innerHTML = ''
+    fillTable()
+}
+
+function createTask(e) {
     e.preventDefault();
 
     if(!inputDescription.value || !inputDate.value) {
-        alert('Preencha todos os campos!');
+        alertBox.style.display = 'block';
+        closeAlert()
         return;
     }
 
     const newTask = {
         description: inputDescription.value,
-        date: new Date(inputDate.value).toLocaleDateString('pt-br', {timeZone: UTC}),
+        date: new Date(inputDate.value).toLocaleDateString('pt-br'),
         id:Math.floor(Math.random() * 10000)
     }
 
     const allTasks = getTasks();
 
-    localStorage.setItem('@GoTasks', JSON.stringify( [ newTask ] ));
+    setTasks([...allTasks, newTask]);
+
+    reload();
+    toggleModal();
+    clearFields();
 }
 
 function getTasks() {
@@ -68,10 +94,17 @@ function setTasks(tasks) {
 
 function toggleModal() {
     modal.classList.toggle('modal-visible')
-    clearFields()
 }
 
 function clearFields() {
     inputDescription.value = ''
     inputDate.value = ''
 }
+
+function closeAlert() {
+    setTimeout(() => {
+        alertBox.style.display = "none";
+    }, 2000)
+}
+
+btnCreateTask.addEventListener('click', createTask);
